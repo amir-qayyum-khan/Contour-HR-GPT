@@ -5,7 +5,7 @@ from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_pinecone import PineconeVectorStore as Pinecone
 
 # --- CONFIGURATION ---
-PINECONE_INDEX_NAME = st.secrets.get("PINECONE_INDEX_NAME")
+PINECONE_INDEX_NAME = "hr-document-chatbot-prod"
 
 # --- API and DB SETUP ---
 def configure_apis():
