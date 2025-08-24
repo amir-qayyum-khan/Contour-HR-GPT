@@ -1,10 +1,10 @@
 streamlit
 google-generativeai
-pinecone
 langchain
 langchain-google-genai
-langchain-pinecone
 langchain-community
 pypdf
 python-dotenv
 unstructured[pdf]
+pinecone>=4.0.0
+langchain-pinecone>=0.1.0
