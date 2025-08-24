@@ -32,7 +32,7 @@ def get_vectorstore():
 
 def get_gemini_response(question, context):
     """Generates a response from Gemini using the provided context."""
-    model = genai.GenerativeModel('gemini-1.5-flash-latest')
+    model = genai.GenerativeModel('gemini-2.5-flash-lite')
     prompt = f"""
     You are a helpful and polite HR assistant for Contour Software.
     - If the user provides a greeting or engages in small talk, respond naturally and professionally.
