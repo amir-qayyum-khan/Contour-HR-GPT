@@ -50,7 +50,7 @@ def get_gemini_response(question, context):
 
 # --- STREAMLIT APP ---
 def main():
-    st.set_page_config(page_title="HR GPT", layout="wide")
+    st.set_page_config(page_title="🔍 HR GPT", layout="wide")
     st.title("🔍 Contour HR GPT")
     st.write("Welcome to the Contour HR Policy Assistant. Ask any question about our company policies and procedures.")
 
@@ -81,7 +81,7 @@ def main():
             st.markdown(prompt)
 
         # Get response
-        with st.chat_message("assistant", avatar="https://contour-software.com/wp-content/uploads/2024/08/Contour-Software.svg"):
+        with st.chat_message("assistant", avatar="assets/logo.png"):
             with st.spinner("Thinking..."):
                 # Find relevant documents
                 docs = vector_store.similarity_search(prompt, k=3)
