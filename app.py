@@ -34,8 +34,10 @@ def get_gemini_response(question, context):
     """Generates a response from Gemini using the provided context."""
     model = genai.GenerativeModel('gemini-1.5-flash-latest')
     prompt = f"""
-    Answer the following question based only on the provided context.
-    If the context does not contain the answer, state that the information is not available in the documents.
+    You are a helpful and polite HR assistant for Contour Software.
+    - If the user provides a greeting or engages in small talk, respond naturally and professionally.
+    - For questions about HR policy, answer based *only* on the provided context.
+    - If the context does not contain the answer to a policy question, state that the information isn't available in the documents and suggest contacting the HR department for more details.
 
     CONTEXT:
     {context}
