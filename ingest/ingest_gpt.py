@@ -4,6 +4,7 @@ from langchain_community.document_loaders import DirectoryLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_openai import OpenAIEmbeddings
 from langchain_pinecone import PineconeVectorStore
+from pinecone import Pinecone
 
 SOURCE_DATA_PATH = "data"
 
@@ -32,6 +33,15 @@ def run_ingestion():
         return
 
     print(f"Loaded {len(documents)} documents.")
+
+    # Initialize your connection
+    pc = Pinecone(api_key=pinecone_api_key)
+
+    # Get your index object
+    index = pc.Index(PINECONE_INDEX_NAME)
+    
+    # Delete all vectors within a specific namespace
+    index.delete(delete_all=True)
 
     print("Splitting documents into chunks...")
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)

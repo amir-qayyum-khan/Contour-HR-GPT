@@ -1,26 +1,27 @@
 import os
-import streamlit as st
+from dotenv import load_dotenv, find_dotenv
 from langchain_community.document_loaders import DirectoryLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_google_genai import GoogleGenerativeAIEmbeddings
+from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_pinecone import PineconeVectorStore
 from pinecone import Pinecone
 
+SOURCE_DATA_PATH = "data"
 
 # --- CONFIGURATION ---
-PINECONE_INDEX_NAME = st.secrets.get("PINECONE_INDEX_NAME")
-SOURCE_DATA_PATH = "data"
+load_dotenv(find_dotenv(), override=True)
 
 def run_ingestion():
     """
-    Loads documents, splits them into chunks, creates embeddings,
+    Loads documents, splits them into chunks, creates embeddings with OpenAI,
     and stores them in Pinecone.
     """
     # Load API keys from secrets
-    google_api_key = st.secrets.get("GOOGLE_API_KEY")
-    pinecone_api_key = st.secrets.get("PINECONE_API_KEY")
+    PINECONE_INDEX_NAME = os.getenv("PINECONE_INDEX_NAME")
+    openai_api_key = os.getenv("OPENAI_API_KEY")
+    pinecone_api_key = os.getenv("PINECONE_API_KEY")
 
-    if not google_api_key or not pinecone_api_key:
+    if not openai_api_key or not pinecone_api_key or not PINECONE_INDEX_NAME:
         print("API keys not found. Please set them in .streamlit/secrets.toml")
         return
 
@@ -47,8 +48,8 @@ def run_ingestion():
     docs = text_splitter.split_documents(documents)
     print(f"Split into {len(docs)} chunks.")
 
-    print("Initializing embeddings model...")
-    embeddings = GoogleGenerativeAIEmbeddings(model="models/text-embedding-004", google_api_key=google_api_key)
+    # 3. Create embeddings (using an embedding model, NOT Grok)
+    embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
 
     print("Uploading documents and embeddings to Pinecone...")
     PineconeVectorStore.from_documents(docs, embeddings, index_name=PINECONE_INDEX_NAME)
